@@ -19,3 +19,26 @@ python recovery_fs_v2.py input-file-path
 The sample alist file is the same graph with 5 vertices in the preprint. Note that the pre-process adds a pseudo-source and sink to the 
 graph (so it now has 7 vertices). And I also scaled the weights just to make the integer encoding easier for the solver (it doesn't make 
 any difference in the source code).
+
+Sample output:
+all constraints satisfied = True            # check if returned solution satisfies all constraints and output unsatisfied ones (if any)
+unsatisfied constraints =
+Set 1 ------------------------
+Set 2 ------------------------
+Set 3 ------------------------
+Set 4 ------------------------
+Set 5 ------------------------
+Recovery matrix =                           # output the recovery matrix and sequence for feasible solutions
+1.0 1.0 1.0 1.0 1.0 
+0.0 0.0 0.0 0.0 1.0 
+0.0 1.0 1.0 1.0 1.0 
+0.0 0.0 1.0 1.0 1.0 
+0.0 0.0 0.0 1.0 1.0 
+Recovery sequence = [1, 3, 4, 5, 2]
+Flow value after each iteration             # output the max flow value after each repair iteration
+0.0
+0.0
+2.0
+2.0
+3.0
+Solution objective value = -7.0
