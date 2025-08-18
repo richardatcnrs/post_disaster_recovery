@@ -10,3 +10,6 @@ the corresponding vertices.
 
 The next line is a list that represents the broken equipment at the start.
 The last line is the vertex capacity for each vertex in the graph.
+
+You can run the script via the following command:
+python recovery_fs_v2.py input-file-path
