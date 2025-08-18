@@ -11,5 +11,11 @@ the corresponding vertices.
 The next line is a list that represents the broken equipment at the start.
 The last line is the vertex capacity for each vertex in the graph.
 
+
+
 You can run the script via the following command:
 python recovery_fs_v2.py input-file-path
+
+The sample alist file is the same graph with 5 vertices in the preprint. Note that the pre-process adds a pseudo-source and sink to the 
+graph (so it now has 7 vertices). And I also scaled the weights just to make the integer encoding easier for the solver (it doesn't make 
+any difference in the source code).
