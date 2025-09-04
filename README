@@ -22,7 +22,7 @@ any difference in the source code).
 
 Sample output:
 all constraints satisfied = True             # check if returned solution satisfies all constraints 
-					      # and output unsatisfied ones (if any)
+					      					# and output unsatisfied ones (if any)
 unsatisfied constraints =
 Set 1 ------------------------
 Set 2 ------------------------
