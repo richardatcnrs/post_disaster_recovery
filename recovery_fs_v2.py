@@ -55,26 +55,16 @@ def decode_solution(values,recovery_var,broken_nodes,k):
         print(values[node_flow_var[n-1,t]])
 
 # solver time in milli seconds
-
 time = 5000
 if '-t' in sys.argv:
     # convert input time to seconds
     time = int(sys.argv[sys.argv.index('-t')+1].strip())*1000
 
 # replace token with your access token from Fixstars Amplify
-token_file = open('/home/richard/Desktop/data/fs_token','r')
-token = token_file.readline().strip()
+token = ''
 #print(token)
-token_file.close()
-
 
 n, weight_matrix, broken_nodes,edge_list,node_capacity = read_input()
-#print(n) 
-#print(weight_matrix)
-#print(broken_nodes)
-
-
-
 
 # setting up the variables for the recovery matrix
 # note that I'm assuming the broken vertices are labelled 
@@ -105,11 +95,6 @@ for u in range(n):
             else:
 
                 edge_flow_var[u,v,t].upper_bound = 0
-
-
-
-
-
 
 # setting up the constraints
 # source always have the max flow value
@@ -176,10 +161,8 @@ for t in range(1,k):
         #print(expression)
         for u in range(n):
             if (v,u) in edge_list:
-
-                #print(v, 'ccccccccccc',(v,u))
                 expression = expression - edge_flow_var[v,u,t]
-                #print(expression)
+                
         constraint = greater_equal(expression,0,label='flow leaving vertex ' + str(v) + ' at step ' + str(t))
         constraint_set_5.append(constraint)
 
@@ -221,10 +204,9 @@ for constraint in constraint_set_5:
 model += amplifysum(constraint for constraint in constraint_set_1)
 model += amplifysum(constraint for constraint in constraint_set_2)
 model += amplifysum(constraint for constraint in constraint_set_3)
-#print(model)
 model += amplifysum(constraint for constraint in constraint_set_4)
 model += amplifysum(constraint for constraint in constraint_set_5)
-#print(model)
+
 
 client = FixstarsClient()
 client.token = token.strip()
@@ -232,63 +214,27 @@ client.token = token.strip()
 client.parameters.timeout = timedelta(milliseconds=10000)
 
 
-result = solve(model,client,filter_solution=False)
-#print(result)
-#print(result.best.objective)
-#print(result.best.feasible)
-#values = (result.best.values)
-#print(len(result.solutions))
+constraint_sets = []
+constraint_sets.append(constraint_set_1)
+constraint_sets.append(constraint_set_2)
+constraint_sets.append(constraint_set_3)
+constraint_sets.append(constraint_set_4)
+constraint_sets.append(constraint_set_5)
 
+result = solve(model,client,filter_solution=False)
 for solution in result.solutions:
     # output solution feasibility and unsatisfied constraints (if any)
     print('all constraints satisfied =', solution.feasible)
     print('unsatisfied constraints =')
-    infeasible_constraints = []
-    for constraint in constraint_set_1:
-        if not(constraint.is_satisfied(solution.values)):
-            infeasible_constraints.append(constraint)
-    print('Set 1 ------------------------')
-    #print(infeasible_constraints)
-    for constraint in infeasible_constraints:
-        print(constraint)
 
+    for i in range(5):
+        infeasible_constraints = []
+        constraint_set = constraint_sets[i]
+        for constraint in constraint_set:
+            if not(constraint.is_satisfied(solution.values)):
+                infeasible_constraints.append(constraint)
+        print('Set ' + str(i) + ' ------------------------')
 
-    infeasible_constraints = []
-    for constraint in constraint_set_2:
-        if not(constraint.is_satisfied(solution.values)):
-            infeasible_constraints.append(constraint)
-    print('Set 2 ------------------------')
-    for constraint in infeasible_constraints:
-        print(constraint)
-
-
-    infeasible_constraints = []
-    for constraint in constraint_set_3:
-        if not(constraint.is_satisfied(solution.values)):
-            infeasible_constraints.append(constraint)
-    print('Set 3 ------------------------')
-    for constraint in infeasible_constraints:
-        print(constraint)
-
-
-    infeasible_constraints = []
-    for constraint in constraint_set_4:
-        if not(constraint.is_satisfied(solution.values)):
-            infeasible_constraints.append(constraint)
-    print('Set 4 ------------------------')
-    for constraint in infeasible_constraints:
-        print(constraint)
-   
-
-    infeasible_constraints = []
-    for constraint in constraint_set_5:
-        if not(constraint.is_satisfied(solution.values)):
-            infeasible_constraints.append(constraint)
-    print('Set 5 ------------------------')
-    for constraint in infeasible_constraints:
-        print(constraint)
-   
-    # output the recovery matrix if solution is feasible
     if solution.feasible:
             decode_solution(solution.values,recovery_var,broken_nodes,k)
     print('Solution objective value =', solution.objective)
