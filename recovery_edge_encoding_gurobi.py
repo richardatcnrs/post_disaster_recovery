@@ -176,7 +176,7 @@ def build_model(n, source, sink, edge_list, edge_weights, broken_edges):
     # 3. sum_u_v_t y_u_v_t = sum_v_w_t y_v_w_t for nodes other than source and sink 
     # i.e., incoming flow is equal to outgoing flow
     model.update()
-    for v in range(4,24):
+    for v in range(4,25):
         for t in range(1,k+1):
             #print(v,t)
             LHS=gp.quicksum(y_vars[u,v,t] for u in range(n) if (u,v) in edge_list)
@@ -248,7 +248,18 @@ def process_solution(model,n,broken_edges,recovery_vars,y_vars):
     #        print(f'E{e} = ', y_vars[u,v,1].X)
 n, source, sink, edge_list, edge_weights, broken_edges = read_input()
 model,recovery_vars,y_vars = build_model(n, source, sink, edge_list, edge_weights, broken_edges)
-model.Params.TimeLimit = 30
+
+# set time limit
+
+time_limit_s = 30
+
+if '-t' in sys.argv:
+    # input time in seconds
+    time_limit_s = int(sys.argv[sys.argv.index('-t')+1].strip())
+
+
+model.Params.TimeLimit = time_limit_s
+
 model.Params.OutputFlag = False
 model.optimize()
 
