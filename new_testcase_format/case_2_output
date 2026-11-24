@@ -1,0 +1,20 @@
+Set parameter TimeLimit to value 30
+Solution is optimal
+flow at iteration 1 =  15.0
+flow at iteration 2 =  15.0
+flow at iteration 3 =  28.0
+flow at iteration 4 =  40.0
+flow at iteration 5 =  40.0
+flow at iteration 6 =  51.0
+flow at iteration 7 =  51.0
+flow at iteration 8 =  60.0
+flow at iteration 9 =  60.0
+flow at iteration 10 =  60.0
+flow at iteration 11 =  60.0
+flow at iteration 12 =  60.0
+flow at iteration 13 =  60.0
+flow at iteration 14 =  60.0
+flow at iteration 15 =  60.0
+flow at iteration 16 =  60.0
+objective =  180.0
+recovery_seq =  [25, 38, 1, 39, 34, 7, 41, 24, 28, 35, 26, 11, 19, 13, 23, 6]
